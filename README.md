@@ -115,6 +115,12 @@ Designed the Custom Similarity Loss (similarity_loss): built a domain-aware pena
 
 Defined the 10×10 Penalty Matrix: manually constructed with higher penalties (3.0) for vehicle-animal confusion (classes 0, 1, 8, 9 vs. 2–7), making the model penalise semantically distant errors more than nearby ones
 
+Basically we assign different punishment penalties-
+1. If the prediction is correct (diagonal elements) we give 0 penalty.
+2. If the prediction is wrong but is in intra class then we give 1 penalty.
+3. If the prediction is wrong and is inter class then we give 3 penalty.
+
+
 Integrated Base Model Architecture: loaded and configured MobileNetV2 with include_top=False and weights=None for CIFAR-10's 32×32 input, and stacked it with GlobalAveragePooling2D, Dense(128, relu), Dropout(0.3), and a final Softmax classification head
 
 🟢 Vansh — Mobile Backbone & Model Compilation
@@ -138,25 +144,6 @@ Inference Demo & Confidence Scoring: built a live prediction demo that loads tes
 
 Data Quality Verification: displayed a 3×3 grid of sample training images with their true class labels before training, visually confirming dataset integrity and correct label mapping
 
-🛠️ Setup & Usage
-bash
-# Clone the repo
-git clone https://github.com/your-username/MobileNetV2-CIFAR10-CustomLoss.git
-cd MobileNetV2-CIFAR10-CustomLoss
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Open the notebook
-jupyter notebook Untitled6-3.ipynb
-📋 Requirements
-Python 3.8+
-
-TensorFlow / Keras
-
-NumPy
-
-Matplotlib
 
 🏆 Key Takeaway
 The custom similarity loss function — by embedding domain knowledge directly into the training signal — enables the model to learn semantically meaningful boundaries between classes. The result is a 70.71% accuracy on CIFAR-10 using a lightweight MobileNetV2 backbone trained from scratch, versus only 46.81% under standard cross-entropy.
