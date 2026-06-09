@@ -9,18 +9,6 @@ Standard Cross-Entropy (Built-in)	46.81%	5.7145
 Custom Similarity Loss	70.71%	1.7712
 The custom loss delivers a +23.9 percentage point improvement in test accuracy over the standard baseline.
 
-📁 Project Structure
-text
-📦 MobileNetV2-CIFAR10/
- ┣ 📓 Untitled6-3.ipynb       ← Main notebook (all code, training, evaluation)
- ┣ 📊 results/
- ┃  ┣ accuracy_comparison.png
- ┃  ┣ loss_comparison.png
- ┃  ┣ final_accuracy_bar.png
- ┃  ┗ penalty_matrix.png
- ┣ 📄 README.md
- ┣ 📄 requirements.txt
- ┗ 📄 .gitignore
 📦 Dataset — CIFAR-10
 CIFAR-10 contains 60,000 colour images (32×32 pixels) across 10 balanced classes:
 
