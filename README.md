@@ -1,20 +1,32 @@
-MobileNetV2 + Custom Loss Function on CIFAR-10
+🧠 MobileNetV2 + Custom Loss Function on CIFAR-10
 Lightweight Image Classification with Semantic Penalty Loss
 
 A deep learning project that benchmarks MobileNetV2 on the CIFAR-10 dataset under two training regimes: a standard cross-entropy loss and a custom-designed semantic similarity loss that penalises semantically distant misclassifications more heavily.
 
-Key Results
+📊 Key Results
 Configuration	Test Accuracy	Final Test Loss
 Standard Cross-Entropy (Built-in)	46.81%	5.7145
 Custom Similarity Loss	70.71%	1.7712
 The custom loss delivers a +23.9 percentage point improvement in test accuracy over the standard baseline.
 
-Dataset — CIFAR-10
+📁 Project Structure
+text
+📦 MobileNetV2-CIFAR10/
+ ┣ 📓 Untitled6-3.ipynb       ← Main notebook (all code, training, evaluation)
+ ┣ 📊 results/
+ ┃  ┣ accuracy_comparison.png
+ ┃  ┣ loss_comparison.png
+ ┃  ┣ final_accuracy_bar.png
+ ┃  ┗ penalty_matrix.png
+ ┣ 📄 README.md
+ ┣ 📄 requirements.txt
+ ┗ 📄 .gitignore
+📦 Dataset — CIFAR-10
 CIFAR-10 contains 60,000 colour images (32×32 pixels) across 10 balanced classes:
 
 Category	Classes
-Vehicles	Airplane, Automobile, Ship, Truck
-Animals	Bird, Cat, Deer, Dog, Frog, Horse
+🚗 Vehicles	Airplane, Automobile, Ship, Truck
+🐾 Animals	Bird, Cat, Deer, Dog, Frog, Horse
 Training set: 50,000 images
 
 Test set: 10,000 images
@@ -22,7 +34,7 @@ Test set: 10,000 images
 Preprocessing: Pixel values normalised to 
 , labels one-hot encoded
 
-Model Architecture
+🏗️ Model Architecture
 text
 Input (32×32×3)
      ↓
@@ -38,7 +50,7 @@ Dense(10, activation='softmax')
 Why MobileNetV2?
 It uses depthwise separable convolutions to stay computationally lightweight — ideal for resource-constrained environments — while still learning rich feature representations.
 
-Custom Similarity Loss
+🔴 Custom Similarity Loss
 The core innovation of this project. Instead of treating all misclassifications equally, the custom loss applies a domain-aware penalty based on how semantically different the predicted class is from the true class.
 
 Penalty Matrix Design:
@@ -63,7 +75,7 @@ Return the weighted total loss — errors on semantically distant classes hurt m
 
 This guides the model to avoid the most harmful types of mistakes (e.g., calling a cat a truck), even if it occasionally confuses a cat with a dog.
 
-Training Configuration
+⚙️ Training Configuration
 Parameter	Value
 Epochs	10
 Batch size	64
@@ -71,7 +83,7 @@ Validation split	10%
 Optimiser	Adam
 Loss (baseline)	Categorical Cross-Entropy
 Loss (custom)	Similarity Loss (penalty-weighted CE)
-Training Results
+📈 Training Results
 Accuracy per Epoch
 Epoch	Built-in Val Acc	Custom Val Acc
 1	20.48%	39.12%
@@ -86,7 +98,7 @@ Epoch	Built-in Val Acc	Custom Val Acc
 10	46.81%	70.71%
 Charts for accuracy and loss curves are included in the results/ folder.
 
-Inference Demo
+🔍 Inference Demo
 The notebook includes a prediction demo that:
 
 Loads a test image
@@ -97,22 +109,22 @@ Prints the predicted class, confidence %, and actual class
 
 Displays the image with a green title if correct, red if wrong
 
-Team Contributions
-Himanshu — Custom Loss Function & Model Architecture
+👥 Team Contributions
+🔵 Himanshu — Custom Loss Function & Model Architecture
 Designed the Custom Similarity Loss (similarity_loss): built a domain-aware penalty matrix that penalises cross-category misclassifications (vehicle vs. animal), incorporated it using tf.constant and tf.gather, and combined it with SparseCategoricalCrossentropy for a semantically informed total loss
 
 Defined the 10×10 Penalty Matrix: manually constructed with higher penalties (3.0) for vehicle-animal confusion (classes 0, 1, 8, 9 vs. 2–7), making the model penalise semantically distant errors more than nearby ones
 
 Integrated Base Model Architecture: loaded and configured MobileNetV2 with include_top=False and weights=None for CIFAR-10's 32×32 input, and stacked it with GlobalAveragePooling2D, Dense(128, relu), Dropout(0.3), and a final Softmax classification head
 
-Vansh — Mobile Backbone & Model Compilation
+🟢 Vansh — Mobile Backbone & Model Compilation
 Integrated MobileNetV2 as Backbone: configured the lightweight MobileNetV2 architecture specifically for the CIFAR-10 32×32×3 input shape, enabling an efficient mobile-friendly feature extractor
 
 Model Compilation with Built-in Loss: compiled the model using the Adam optimiser with categorical_crossentropy loss and accuracy metric — enabling baseline benchmarking against the custom loss variant
 
 Comparative Loss Evaluation: ran training under the standard built-in loss function to allow direct performance comparison with the custom similarity loss, documenting validation accuracy improvements across 10 epochs
 
-Yashraj — Training Pipeline, Full Evaluation & Visualization
+🟡 Yashraj — Training Pipeline, Full Evaluation & Visualization
 Dataset Loading & Preprocessing: loaded the CIFAR-10 dataset (50,000 train / 10,000 test images), normalised pixel values to 
 , and applied to_categorical one-hot encoding for labels — ensuring clean, model-ready inputs before any training began
 
@@ -126,7 +138,7 @@ Inference Demo & Confidence Scoring: built a live prediction demo that loads tes
 
 Data Quality Verification: displayed a 3×3 grid of sample training images with their true class labels before training, visually confirming dataset integrity and correct label mapping
 
-Setup & Usage
+🛠️ Setup & Usage
 bash
 # Clone the repo
 git clone https://github.com/your-username/MobileNetV2-CIFAR10-CustomLoss.git
@@ -146,12 +158,6 @@ NumPy
 
 Matplotlib
 
-Key Takeaway
+🏆 Key Takeaway
 The custom similarity loss function — by embedding domain knowledge directly into the training signal — enables the model to learn semantically meaningful boundaries between classes. The result is a 70.71% accuracy on CIFAR-10 using a lightweight MobileNetV2 backbone trained from scratch, versus only 46.81% under standard cross-entropy.
 
-🙏 Acknowledgements
-CIFAR-10 Dataset — Krizhevsky et al.
-
-MobileNetV2 — Sandler et al., Google
-
-TensorFlow / Keras team
